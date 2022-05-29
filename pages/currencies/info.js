@@ -7,7 +7,7 @@ import Graph from '../../components/Graph'
 import Chat from '../../components/Chat'
 
 const style = {
-  activeTab: `p-1 px-2 mr-2 rounded-lg bg[#171924]`,
+  activeTab: `p-1 px-2 mr-2 rounded-lg bg-[#171924]`,
   tabItem: `px-2`,
   tabContainer: `flex items-center p-2 rounded-xl bg-[#222531] border border-gray-500/10 text-sm`,
   info: `min-h-screen`,
@@ -32,7 +32,7 @@ const Currencies = () => {
     const urlParams = new URLSearchParams(window.location.search)
     setCoinName(urlParams.get('coin'))
     setCoinSymbol(urlParams.get('symbol'))
-    setPrice(urlParams.get('price').toLocaleString())
+    setPrice(Number(urlParams.get('price').toLocaleString()))
   }
 
   return (
