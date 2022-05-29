@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import ChevronDown from '../assets/svg/chevronDown'
 import ChevronUp from '../assets/svg/chevronUp'
 import shiba from '../assets/shiba.png'
