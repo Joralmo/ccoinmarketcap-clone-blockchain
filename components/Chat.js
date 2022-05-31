@@ -5,6 +5,8 @@ import shiba from '../assets/shiba.png'
 import Image from 'next/image'
 import Button from './Button'
 import ChatCard from './ChatCard'
+import { faker } from '@faker-js/faker'
+import { GunContext } from '../context/gunContext'
 
 const style = {
   bullish: `flex cursor-pointer active:bg-green-600 items-center text text-green-600 border border-green-600 h-min px-2 rounded-lg`,
@@ -25,7 +27,41 @@ const Chat = () => {
   const [message, setMessage] = useState('')
   const [bullishValue, setBullishValue] = useState(true)
 
-  const sendMessage = () => {}
+  const { gun, getMessages, state } = useContext(GunContext)
+
+  useEffect(() => {
+    getMessages('GUN_REF_1')
+  }, [])
+
+  const formattedMessageArray = () => {
+    console.log(state.messages)
+    const uniqueArray = state.messages.filter((value, index) => {
+      const _value = JSON.stringify(value)
+      return (
+        index ===
+        state.messages.findIndex((obj) => JSON.stringify(obj) === _value)
+      )
+    })
+    return uniqueArray
+  }
+
+  const sendMessage = () => {
+    if (message.trim() === '') return
+    const messagesRef = gun.get('GUN_REF_1')
+
+    const newMessage = {
+      content: message,
+      sender: faker.name.findName(),
+      avatar:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3OCSMFIW5fZ3vSN6yGpD-w-6SsL2_ZPA_sw&usqp=CAU',
+      isBullish: bullishValue,
+      createAt: Date().substring(4, 11),
+      messageId: Date.now(),
+    }
+
+    messagesRef.set(newMessage)
+    setMessage('')
+  }
 
   return (
     <>
@@ -90,7 +126,23 @@ const Chat = () => {
       <div className={style.postButtonContainer}>
         <Button label="Post" onPress={sendMessage} />
       </div>
-      <ChatCard />
+      {formattedMessageArray()
+        .slice(0)
+        .reverse()
+        .map((message, index) => {
+          return (
+            <ChatCard
+              key={index}
+              sender={message.sender}
+              senderAvatar="https:/encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3OCSMFIW5fZ3vSN6yGpD-w-6SsL2_ZPA_sw&usqp=CAU"
+              bullish={message.isBullish}
+              timestamp={message.createAt}
+              content={message.content}
+              likes="2.7K"
+              comments="19K"
+            />
+          )
+        })}
     </>
   )
 }
