@@ -13,9 +13,13 @@ const Price = () => {
 
   const getURLData = () => {
     const urlParams = new URLSearchParams(window.location.search)
-    setCoinName(urlParams.get('coin'))
-    setCoinSymbol(urlParams.get('symbol'))
-    setPrice(Number(urlParams.get('price').toLocaleString()))
+    setCoinName(urlParams.get('coin') || 'NoCoin')
+    setCoinSymbol(urlParams.get('symbol') || 'NoSymbol')
+    setPrice(
+      urlParams.get('price')
+        ? Number(urlParams.get('price').toLocaleString())
+        : '0'
+    )
   }
 
   return (
