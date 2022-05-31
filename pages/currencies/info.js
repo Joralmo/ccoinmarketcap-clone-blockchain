@@ -30,9 +30,13 @@ const Currencies = () => {
 
   const getURLData = () => {
     const urlParams = new URLSearchParams(window.location.search)
-    setCoinName(urlParams.get('coin'))
-    setCoinSymbol(urlParams.get('symbol'))
-    setPrice(Number(urlParams.get('price').toLocaleString()))
+    setCoinName(urlParams.get('coin') || 'NoCoin')
+    setCoinSymbol(urlParams.get('symbol') || 'NoSymbol')
+    setPrice(
+      urlParams.get('price')
+        ? Number(urlParams.get('price').toLocaleString())
+        : '0'
+    )
   }
 
   return (
@@ -74,22 +78,22 @@ const Currencies = () => {
               </div>
               <p>
                 Want more data?{' '}
-                <span className='text-[#6188FF]'>Check out our API</span>
+                <span className="text-[#6188FF]">Check out our API</span>
               </p>
             </div>
             <br />
             <br />
-            <CMCPriceConverter 
+            <CMCPriceConverter
               from={coinName}
               fromSymbol={coinSymbol}
               fromLogo={solana}
               toLogo={<Usd />}
               price={price}
-              to='United States Dollar'
-              toSymbol='USD'
+              to="United States Dollar"
+              toSymbol="USD"
             />
           </div>
-          <div className='pt-10 ml-5'>
+          <div className="ml-5 pt-10">
             <Chat />
           </div>
         </div>
